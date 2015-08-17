@@ -1,0 +1,135 @@
+---
+title: "Name of Experiment"
+authors:
+- name: Johannes Schantl
+- name: David Blanchard
+- name: Lisa Deckert
+- name: Christof Stocker
+authorshort: Feature Selection Comparision
+output:
+  pdf_document:
+    highlight: tango
+    keep_tex: yes
+    number_sections: yes
+    pandoc_args: --listings
+    template: config/custom.latex
+    toc: no
+    toc_depth: 2
+  html_document:
+    fig_caption: yes
+    highlight: tango
+    number_sections: yes
+    toc: no
+  word_document: default
+csl: config/elsevier-harvard.csl
+bibliography: references.bib
+sub_title: Experiment Documentation
+---
+```{r, include=FALSE}
+rm(list = ls())
+wdList <- strsplit(getwd(),"/")[[1]]
+lastDir <- wdList[length(wdList) - 1]
+if(lastDir == "experiments") {
+  isMarkdown <- TRUE
+  source('config/knitr-settings.R')
+} else {
+  isMarkdown <- FALSE
+  pathResults <- "publication/results/"
+  if(!file.exists(pathResults)) dir.create(pathResults)
+}
+```
+
+<!--- =================================================== --->
+<!--- =============== CONTENT STARTS HERE =============== --->
+<!--- =================================================== --->
+
+---
+abstract: |
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis
+  nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+  aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+  nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+  officia deserunt mollit anim id est laborum.
+---
+
+# Executive Summary
+
+Short summary about the intention and the main results of this experiment
+
+# Background
+
+Short description where the experiment fits taxonomy wise (big picture background)
+
+## Method(s)
+
+Theoretical background to the method under test
+
+## Dataset(s)
+
+Information about the dataset. What makes it hard or easy to deal with, etc
+
+## Related Work
+
+Point to related work that deals with the same method and/or did a similar analysis
+Point to applications of the method.
+
+# Installation
+
+Everything one needs to know to run the experiment
+
+## Dependencies
+
+The following R libraries have been used throughout the
+analysis process and are required in order to reproduce the results.
+
+You can import them using the ``library`` function.
+
+```{r, echo=FALSE, message=FALSE, results='hide'}
+# If a package is not yet installed, it will be installed automatically
+options(repos = c(CRAN = "http://cran.rstudio.com/"))
+libraryAutoInst <- function(package, ...) {
+  if(!require(package, character.only = T)) 
+    install.packages(package)
+  library(package, character.only = T, ...)
+}
+
+# First import all the required libraries.
+# I do that in this untypical way to support automatic creation of the dpendencie list
+requiredLibraries <- c("ggplot2", "ggthemes", "dplyr", "data.table", "pander", "knitr")
+invisible(lapply(requiredLibraries, libraryAutoInst))
+
+## Set global settings for theme and color
+theme_set(theme_bw())
+```
+
+```{r, echo=FALSE, message=FALSE, results='asis'}
+# Print a markdown list of all the required libraries with some metadata
+PrintLibrary <- function(x) {
+  desc <- packageDescription(x)
+  if(is.null(desc$URL)) desc$URL <- paste("https://www.google.at/search?q=R package", x)
+  pUrl <- first(first(strsplit(desc$URL, ";|,"))) # avoid problems if multiple URLs are listed
+  paste("* [", x, "](", pUrl,") (v", desc$Version,"): ", desc$Title,"\n", sep="")
+}
+cat(paste(sapply(requiredLibraries, PrintLibrary), collapse = ""))
+```
+
+Concerning R itself, we used **`r version$version.string`**.
+
+
+# Experiment Design
+
+How the experiment is set up as well as why it is set up this way.
+Point out weak points
+
+# Results
+
+Show the numerical results and plots. Describe everything you see as you see it (no judging at this point)
+
+# Discussion
+
+Interpret the results using your background knowledge. Make it clear if you speculate; there is no shame in it as long as you are honoest about it.
+
+\newpage
+
+# References
