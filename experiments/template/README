@@ -1,0 +1,6 @@
+# Template for Experiments
+
+This is the basic template folder for each experiment.
+If you want to create a new experiment just copy this folder and rename it 
+accordingly (use the format: ``experiment_name``).
+Don't forget to rename the .Rmd file too.
